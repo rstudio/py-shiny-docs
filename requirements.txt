@@ -1,0 +1,5 @@
+jupyter
+jupyter_client < 8.0.0
+tabulate
+shinylive==0.0.13
+quartodoc@git+https://github.com/machow/quartodoc.git@1c8bd3c43753b51d773f475bae3f42b497101637

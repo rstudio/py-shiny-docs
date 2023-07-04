@@ -1,0 +1,358 @@
+project:
+  type: website
+  output-dir: _build
+  render:
+    # List index.qmd first so that / redirects to it instead of components.html.
+    - /index.qmd
+    - /*.qmd
+    - docs
+    - in-depth
+    - development
+    - gallery
+    - api
+  resources:
+    - /pypi/**
+    - /robots.txt
+    - objects.json
+    - "*.png"
+    - "*.gif"
+    - "*.jpg"
+    - "*.svg"
+  post-render:
+    - scripts/post-render.py
+
+metadata-files:
+  - api/_sidebar.yml
+
+filters:
+  - shinylive
+  - interlinks
+
+interlinks:
+  sources:
+    python:
+      url: https://docs.python.org/3/
+
+website:
+  title: "Shiny for Python"
+  google-analytics: "UA-20375833-3"
+  page-navigation: true
+  favicon: "favicon.png"
+  open-graph:
+    site-name: Shiny for Python
+    locale: es_ES
+    image: images/shiny-for-python.jpg
+    description: Build interactive web applications easily with the power of Python’s data and scientific stack.
+  twitter-card:
+    title: "Shiny for Python"
+    description: "Build interactive web applications easily with the power of Python’s data and scientific stack."
+    image: "images/shiny-for-python.jpg"
+    image-width: 1200
+    image-height: 630
+    card-style: "summary_large_image"
+
+  navbar:
+    logo: shiny-for-python.svg
+    logo-alt: The logo for Shiny for Python
+    search: true
+    left:
+      - text: "Learn Shiny"
+        file: docs/overview.qmd
+      - text: "Install"
+        href: docs/install.qmd
+      - text: "Deploy"
+        file: docs/deploy.qmd
+      - text: "Shinylive"
+        href: docs/shinylive.qmd
+      - text: "Gallery"
+        file: gallery/index.qmd
+      - text: "Examples"
+        href: https://shinylive.io/py/examples/
+      - text: "Function Reference"
+        href: api/index.qmd
+    right:
+      - icon: github
+        href: https://github.com/rstudio/py-shiny/
+  page-footer:
+    left: 'Proudly supported by <a href="https://www.posit.co/" class="no-icon"><img src="/images/posit-logo-black.svg" alt="Posit" width="80" style="padding-left: 3px;vertical-align:text-top;"></a>'
+    right:
+      - icon: github
+        href: https://github.com/rstudio/py-shiny/
+        aria-label: Shiny for Python Github Repo
+      - icon: twitter
+        href: https://twitter.com/posit_pbc
+        aria-label: Posit Twitter
+      - icon: youtube
+        href: https://www.youtube.com/playlist?list=PL9HYL-VRX0oRbLoj3FyL5zeASU5FMDgVe
+        aria-label: Shiny YouTube Playlist
+  sidebar:
+    - id: docs
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - section: "Framework Comparisons"
+          contents:
+            - docs/comp-streamlit.qmd
+            - docs/comp-r-shiny.qmd
+        - section: "Essentials"
+          contents:
+            - docs/overview.qmd
+            - docs/inputs.qmd
+            - docs/outputs.qmd
+            - docs/server.qmd
+        - section: "Reactivity"
+          contents:
+            - docs/reactive-programming.qmd
+            - docs/reactive-calculations.qmd
+            - docs/reactive-events.qmd
+            - docs/reactive-values.qmd
+            - docs/reactive-mutable.qmd
+        - section: "Page Layout and Style"
+          contents:
+            - docs/ui-page-layouts.qmd
+            - docs/ui-styling.qmd
+            - docs/ui-navigation.qmd
+            - docs/ui-dynamic.qmd
+            - docs/ui-feedback.qmd
+            - docs/ui-static.qmd
+        - section: "Workflow"
+          contents:
+            - docs/workflow-modules.qmd
+            - docs/running-debugging.qmd
+        - section: "In Depth"
+          contents:
+            - docs/ipywidgets.qmd
+            - docs/ui-html.qmd
+            - docs/workflow-server.qmd
+    # TODO: if the sidebar only has 1 entry, then it displays for the entire site...
+    # added entry below to prevent this.
+    - id: deploy
+
+format:
+  html:
+    # it appears that these are applied to all rendered pages, and _metadata.yml
+    # in a subdirectory would e.g. add an additional css file (not override the one here)
+    # see _metadata.yml for options meant to be overridden in subdirectories.
+    toc: true
+    theme: quarto-style.scss
+    include-in-header: trailing-slash-redirect.html
+    code-copy: true
+    link-external-newwindow: true
+
+quartodoc:
+  style: pkgdown
+  dir: api
+  package: shiny
+  rewrite_all_pages: false
+  out_index: _api_index.qmd
+  sidebar: api/_sidebar.yml
+  renderer:
+    style: _renderer.py
+    show_signature_annotations: false
+  sections:
+    - title: Page containers
+      desc: Create a user interface page container.
+      contents:
+        - ui.page_navbar
+        - ui.page_fluid
+        - ui.page_fixed
+        - ui.page_bootstrap
+    - title: UI Layout
+      desc: Control the layout of multiple UI components.
+      contents:
+        - ui.layout_sidebar
+        - ui.panel_sidebar
+        - ui.panel_main
+        - ui.column
+        - ui.row
+    - title: UI Inputs
+      desc: Create UI that prompts the user for input values or interaction.
+      contents:
+        - ui.input_select
+        - ui.input_selectize
+        - ui.input_slider
+        - ui.input_date
+        - ui.input_date_range
+        - ui.input_checkbox
+        - ui.input_checkbox_group
+        - ui.input_switch
+        - ui.input_radio_buttons
+        - ui.input_numeric
+        - ui.input_text
+        - ui.input_text_area
+        - ui.input_password
+        - ui.input_action_button
+        - ui.input_action_link
+    - title: Update inputs
+      desc: Programmatically update input values.
+      contents:
+        - name: ui.update_select
+          dynamic: true
+        - name: ui.update_selectize
+          dynamic: true
+        - name: ui.update_slider
+          dynamic: true
+        - ui.update_date
+        - name: ui.update_date_range
+          dynamic: true
+        - name: ui.update_checkbox
+          dynamic: true
+        - name: ui.update_checkbox_group
+          dynamic: true
+        - name: ui.update_switch
+          dynamic: true
+        - name: ui.update_radio_buttons
+          dynamic: true
+        - name: ui.update_numeric
+          dynamic: true
+        - ui.update_text
+        - name: ui.update_text_area
+          dynamic: "shiny.ui.update_text"
+        - name: ui.update_navs
+          dynamic: true
+    - title: Navigation (tab) panels
+      desc: Create segments of UI content.
+      contents:
+        - ui.nav
+        - ui.nav_control
+        - ui.nav_spacer
+        - ui.nav_menu
+        - ui.navset_tab
+        - ui.navset_tab_card
+        - ui.navset_pill
+        - ui.navset_pill_card
+        - ui.navset_pill_list
+    - title: UI panels
+      desc: Visually group together a section of UI components.
+      contents:
+        - ui.panel_absolute
+        - ui.panel_fixed
+        - ui.panel_conditional
+        - ui.panel_title
+        - ui.panel_well
+    - title: Uploads & downloads
+      desc: Allow users to upload and download files.
+      contents:
+        - ui.input_file
+        - ui.download_button
+    - title: Custom UI
+      desc: Lower-level UI functions for creating custom HTML/CSS/JS
+      contents:
+        - ui.HTML       # uses justattributes.rst template
+        - ui.TagList    # uses class.rst template
+        - name: ui.tags       # uses tags.rst template
+          children: embedded
+        - ui.markdown
+        - ui.insert_ui
+        - ui.remove_ui
+    - title: Rendering outputs
+      desc: "UI (output_*()) and server (render)ing functions for generating content server-side."
+      contents:
+        - ui.output_data_frame
+        - ui.output_image
+        - ui.output_plot
+        - ui.output_table
+        - ui.output_text
+        - ui.output_text_verbatim
+        - ui.output_ui
+        - render.data_frame
+        - render.image
+        - render.plot
+        - render.table
+        - render.text
+        - render.ui
+    - title: Reactive programming
+      desc: ""
+      contents:
+        - reactive.Calc
+        - reactive.Effect
+        - reactive.Value
+        - reactive.event
+        - reactive.isolate
+        - reactive.invalidate_later
+        - reactive.flush
+        - reactive.poll
+        - reactive.file_reader
+        - reactive.lock
+
+    - title: Create and run applications
+      desc: ""
+      contents:
+        - run_app
+
+        # uses class.rst template
+        - App
+        - Inputs
+        - Outputs
+        - Session
+    - title: Display messages
+      desc: ""
+      contents:
+        - ui.help_text
+        - ui.notification_show
+        - ui.notification_remove
+        - ui.modal
+        - ui.modal_show
+        - ui.modal_remove
+        - ui.modal_button
+        - ui.Progress          # uses class.rst
+    - title: Modules
+      desc: ""
+      contents:
+        # uses class.rst template
+        - module.ui
+        - module.server
+    - title: Developer facing tools
+      desc: ""
+      contents:
+        - session.get_current_session
+        - session.require_active_session
+        - session.session_context
+        - reactive.get_current_context
+        - name: input_handler.input_handlers
+          dynamic: true
+    - title: Types
+      desc: ""
+      contents:
+        - kind: page
+          path: MiscTypes
+          flatten: true
+          summary:
+            name: "Miscellaneous types"
+            desc: ""
+          contents:
+            - types.MISSING_TYPE
+            - types.MISSING
+            - types.FileInfo
+            - types.ImgData
+            - types.NavSetArg
+            - ui._input_slider.SliderValueArg
+            - ui._input_slider.SliderStepArg
+        - kind: page
+          path: TagTypes
+          summary:
+            name: "Tag types"
+            desc: ""
+          flatten: true
+          package: null
+          contents:
+            - htmltools.Tag
+            - htmltools.TagAttrs
+            - htmltools.TagAttrValue
+            - htmltools.TagChild
+            - htmltools.TagList
+        - kind: page
+          path: ExceptionTypes
+          summary:
+            name: "Exception types"
+            desc: ""
+          flatten: true
+          contents:
+            - types.SilentException
+            - types.SilentCancelOutputException
+            - types.SafeException
+
+editor:
+  markdown:
+    wrap: sentence
